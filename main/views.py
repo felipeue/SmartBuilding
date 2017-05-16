@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from main.models import Building
+from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView, TemplateView
 
-# Create your views here.
+
+class IndexView(TemplateView):
+    template_name = "index.html"
+
+
+
+
+

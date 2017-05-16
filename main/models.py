@@ -10,8 +10,8 @@ class Building(models.Model):
     name = models.CharField(max_length=40)
     address = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
-    owner = models.ForeignKey(User, related_name='building')
-    concierges = models.ManyToManyField(User)
+    owner = models.ForeignKey(User, related_name='owner')
+    concierges = models.ManyToManyField(User, blank=True, related_name='concierges')
 
     def __unicode__(self):
         return str(self.id)
@@ -20,8 +20,8 @@ class Building(models.Model):
 class Apartment(models.Model):
     number = models.IntegerField(unique=True)
     floor = models.IntegerField()
-    building = models.ForeignKey(Building, related_name='apartment')
-    residents = models.ManyToManyField(User)
+    building = models.ForeignKey(Building)
+    residents = models.ManyToManyField(User, blank=True)
 
     def __unicode__(self):
         return str(self.id)
@@ -32,17 +32,17 @@ class Visit(models.Model):
     rut = models.CharField(max_length=12)
     date = models.DateTimeField(default=datetime.now)
     apartment = models.ForeignKey(Apartment)
-    resident = models.ForeignKey(User)
+    visited = models.ForeignKey(User, related_name='visited')
     note = models.TextField(max_length=200)
     received = models.BooleanField(default=True)
-    consierge = models.ForeignKey(User)
+    checked_by = models.ForeignKey(User, related_name='checked_by')
 
     def __unicode__(self):
         return str(self.id)
 
 
 class Publication(models.Model):
-    publisher = models.ForeignKey(User, related_name='publication')
+    publisher = models.ForeignKey(User)
     title = models.CharField(max_length=100)
     date = models.DateField(default=datetime.now)
     hour = models.TimeField(default=datetime.now)
@@ -55,7 +55,7 @@ class Publication(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    building = models.ForeignKey(Building, related_name='location')
+    building = models.ForeignKey(Building, related_name='building')
 
     def __unicode__(self):
         return str(self.id)
@@ -66,8 +66,8 @@ class Event(models.Model):
     start = models.CharField(max_length=100)
     end = models.CharField(max_length=100)
     all_day = models.IntegerField()
-    resident = models.ForeignKey(User, related_name='event')
-    location = models.ForeignKey(Location, related_name='event')
+    resident = models.ForeignKey(User)
+    location = models.ForeignKey(Location)
 
     def __unicode__(self):
         return str(self.id)
@@ -76,7 +76,7 @@ class Event(models.Model):
 class Rent(models.Model):
     month = models.CharField(max_length=50)
     amount = models.IntegerField()
-    resident = models.ForeignKey(User, related_name='rent')
+    resident = models.ForeignKey(User)
     date = models.DateTimeField(default=datetime.now())
 
     def __unicode__(self):
