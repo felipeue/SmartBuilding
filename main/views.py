@@ -4,7 +4,11 @@ from django.views.generic import ListView, DetailView, TemplateView
 
 
 class IndexView(TemplateView):
-    template_name = "index.html"
+    template_name = "home.html"
+
+
+class LoginView(TemplateView):
+    template_name = "login.html"
 
 
 
