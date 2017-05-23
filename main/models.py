@@ -5,6 +5,12 @@ from datetime import datetime
 
 
 # Create your models here.
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+    is_concierge = models.BooleanField(default=False)
+    is_resident = models.BooleanField(default=False)
+    is_owner = models.BooleanField(default=False)
+
 
 class Building(models.Model):
     name = models.CharField(max_length=40)
