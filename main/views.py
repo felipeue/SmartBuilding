@@ -35,3 +35,4 @@ class LogoutView(RedirectView):
 class DashboardView(OwnerLoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
+
