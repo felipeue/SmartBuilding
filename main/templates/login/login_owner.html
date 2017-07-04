@@ -1,0 +1,42 @@
+{% extends 'base_login.html' %}
+{% load staticfiles %}
+{% block main %}
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form class="login-form" action="/login/" method="post">
+        {% csrf_token %}
+        <div class="form-title">
+            <span class="form-title">Bienvenido.</span>
+            <span class="form-subtitle">Ingreso a la plataforma</span>
+        </div>
+        <div class="alert alert-danger display-hide">
+            <button class="close" data-close="alert"></button>
+            <span> Datos incorrectos. </span>
+        </div>
+        <div class="form-group">
+            <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+            <label class="control-label visible-ie8 visible-ie9">Rut</label>
+            <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Rut" name="username" autofocus oninput="checkRut(this)"/> </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Contraseña</label>
+            <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Contraseña" name="password" /> </div>
+        <div class="form-actions">
+            <button type="submit" class="btn red btn-block uppercase">Ingresar</button>
+        </div>
+        <div class="form-actions">
+            <div class="pull-left">
+                <label class="rememberme mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" name="remember" value="1" /> Guardar credenciales
+                    <span></span>
+                </label>
+            </div>
+            <div class="pull-right forget-password-block">
+                <a href="/password_reset/" id="forget-password" class="forget-password">Olvide mi contraseña</a>
+            </div>
+        </div>
+
+    </form>
+    <!-- END LOGIN FORM -->
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+</div>
+{% endblock %}
