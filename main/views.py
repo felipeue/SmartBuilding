@@ -10,7 +10,7 @@ class IndexView(TemplateView):
 
 class LoginView(FormView):
     form_class = AuthenticationForm
-    template_name = "login.html"
+    template_name = "login/login_owner.html"
     success_url = reverse_lazy("dashboard")
 
     def dispatch(self, request, *args, **kwargs):
@@ -33,6 +33,6 @@ class LogoutView(RedirectView):
 
 
 class DashboardView(OwnerLoginRequiredMixin, TemplateView):
-    template_name = "index.html"
+    template_name = "index_dashboard.html"
 
 
