@@ -6,3 +6,4 @@ staticfiles
 db.sqlite3
 migrations
 v
+.DS_Storec

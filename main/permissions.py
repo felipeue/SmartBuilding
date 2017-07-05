@@ -26,7 +26,7 @@ class ResidentLoginRequiredMixin(object):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated():
             return HttpResponseRedirect(reverse_lazy("login"))
-        elif not request.user.profile.is_owner:
+        elif not request.user.profile.is_resident:
             return HttpResponseRedirect(reverse_lazy("logout"))
         else:
             return super(ResidentLoginRequiredMixin, self).dispatch(request, *args, **kwargs)

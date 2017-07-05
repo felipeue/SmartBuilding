@@ -1,6 +1,6 @@
-from django.views.generic import TemplateView, FormView, RedirectView
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import TemplateView, RedirectView
+from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import render
 from main.permissions import *
 
 
@@ -8,20 +8,28 @@ class IndexView(TemplateView):
     template_name = "home.html"
 
 
-class LoginView(FormView):
-    form_class = AuthenticationForm
-    template_name = "login/login_owner.html"
-    success_url = reverse_lazy("dashboard")
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return HttpResponseRedirect(self.get_success_url())
+def login_resident(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                if user.profile.is_concierge:
+                    return HttpResponseRedirect('/concierge/dashboard/')
+                elif user.profile.is_owner:
+                    return HttpResponseRedirect('/owner/dashboard/')
+                elif user.profile.is_resident:
+                    return HttpResponseRedirect('/resident/dashboard/')
+                else:
+                    return HttpResponseRedirect('/logout/')
+            else:
+                return HttpResponseRedirect('/login/')
         else:
-            return super(LoginView, self).dispatch(request, *args, **kwargs)
-
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return super(LoginView, self).form_valid(form)
+            return HttpResponseRedirect('/login/')
+    else:
+        return render(request, 'login/login_owner.html', {})
 
 
 class LogoutView(RedirectView):
@@ -31,8 +39,5 @@ class LogoutView(RedirectView):
         logout(request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
-
-class DashboardView(OwnerLoginRequiredMixin, TemplateView):
-    template_name = "index_dashboard.html"
 
 
