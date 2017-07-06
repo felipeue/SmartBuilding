@@ -1,9 +1,9 @@
 from django.conf.urls import url
-from concierge import views
+from owner import views
 
 
 urlpatterns = [
     url(r'^dashboard/$',
         views.DashboardView.as_view(),
-        name='dashboard_concierge'),
+        name='dashboard_owner'),
     ]

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'concierge',
+    'resident',
+    'owner',
     'widget_tweaks'
 ]
 
