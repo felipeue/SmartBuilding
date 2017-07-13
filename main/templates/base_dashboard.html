@@ -126,7 +126,7 @@
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu   " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                     <!-- BEGIN CONCIERGE MENU -->
-                        {% if user.profile.is_concierge %}
+                        {% if user.concierge %}
                         <li class="heading">
                             <h3 class="uppercase">Registro de visitas</h3>
                         </li>
@@ -169,7 +169,7 @@
                         {% endif %}
 
                         <!-- END CONCIERGE MENU -->
-                        {% if user.profile.is_resident %}
+                        {% if user.resident %}
                         <!-- BEGIN RESIDENT MENU -->
                         <li class="heading">
                             <h3 class="uppercase">Registro de visitas</h3>
@@ -216,7 +216,7 @@
                         {% endif %}
                         <!-- END RESIDENT MENU -->
                         <!-- BEGIN OWNER MENU -->
-                        {% if user.profile.is_owner %}
+                        {% if user.owner %}
                         <li class="heading">
                             <h3 class="uppercase">Registro de visitas</h3>
                         </li>

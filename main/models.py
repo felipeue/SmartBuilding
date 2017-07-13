@@ -5,23 +5,10 @@ from datetime import datetime
 
 
 # Create your models here.
-class Profile(models.Model):
-    user = models.OneToOneField(User)
-    is_concierge = models.BooleanField(default=False)
-    is_resident = models.BooleanField(default=False)
-    is_owner = models.BooleanField(default=False)
-    phone = models.CharField(max_length=20)
-
-    def __unicode__(self):
-        return self.user.username
-
-
 class Building(models.Model):
     name = models.CharField(max_length=40)
     address = models.CharField(max_length=100)
     phone = models.CharField(max_length=20)
-    owner = models.ManyToManyField(User, related_name='owner')
-    concierges = models.ManyToManyField(User, blank=True, related_name='concierges')
 
     def __unicode__(self):
         return self.name
@@ -31,7 +18,34 @@ class Apartment(models.Model):
     number = models.IntegerField(unique=True)
     floor = models.IntegerField()
     building = models.ForeignKey(Building)
-    residents = models.ManyToManyField(User, blank=True)
+
+    def __unicode__(self):
+        return str(self.id)
+
+
+class Resident(models.Model):
+    userOrigin = models.OneToOneField(User)
+    phone = models.CharField(max_length=20)
+    apartment = models.ManyToManyField(Apartment)
+
+    def __unicode__(self):
+        return str(self.id)
+
+
+class Concierge(models.Model):
+    userOrigin = models.OneToOneField(User)
+    address = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    building = models.ForeignKey(Building)
+
+    def __unicode__(self):
+        return str(self.id)
+
+
+class Owner(models.Model):
+    user_origin = models.OneToOneField(User)
+    phone = models.CharField(max_length=20)
+    buildings = models.ManyToManyField(Building)
 
     def __unicode__(self):
         return str(self.id)
@@ -41,7 +55,7 @@ class Visit(models.Model):
     name = models.CharField(max_length=60)
     rut = models.CharField(max_length=12, blank=True)
     date = models.DateTimeField(default=datetime.now)
-    resident = models.ForeignKey(User, related_name='visited')
+    resident = models.ForeignKey(Resident, related_name='visited')
     note = models.TextField(max_length=200, blank=True)
     received = models.BooleanField(default=True)
     checked_by = models.ForeignKey(User, related_name='checked_by')
@@ -74,7 +88,7 @@ class Event(models.Model):
     start = models.CharField(max_length=100)
     end = models.CharField(max_length=100)
     all_day = models.IntegerField()
-    resident = models.ForeignKey(User)
+    reserve = models.ForeignKey(User)
     location = models.ForeignKey(Location)
 
     def __unicode__(self):
@@ -84,7 +98,7 @@ class Event(models.Model):
 class Rent(models.Model):
     month = models.CharField(max_length=50)
     amount = models.IntegerField()
-    resident = models.ForeignKey(User)
+    resident = models.ForeignKey(Resident)
     date = models.DateTimeField(default=datetime.now())
 
     def __unicode__(self):

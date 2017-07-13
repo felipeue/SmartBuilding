@@ -16,11 +16,11 @@ def login_resident(request):
         if user:
             if user.is_active:
                 login(request, user)
-                if user.profile.is_concierge:
+                if user.concierge:
                     return HttpResponseRedirect('/concierge/dashboard/')
-                elif user.profile.is_owner:
+                elif user.owner:
                     return HttpResponseRedirect('/owner/dashboard/')
-                elif user.profile.is_resident:
+                elif user.resident:
                     return HttpResponseRedirect('/resident/dashboard/')
                 else:
                     return HttpResponseRedirect('/logout/')
