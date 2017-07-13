@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'concierge',
     'resident',
     'owner',
-    'widget_tweaks'
+    'widget_tweaks',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
